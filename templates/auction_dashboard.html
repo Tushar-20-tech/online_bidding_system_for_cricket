@@ -1,0 +1,951 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Live Bidding Dashboard</title>
+
+<style>
+
+/* RESET */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+/* BODY */
+body{
+background:#050816;
+color:white;
+overflow-x:hidden;
+min-height:100vh;
+
+background:
+radial-gradient(circle at top left, rgba(59,130,246,.15), transparent 25%),
+radial-gradient(circle at bottom right, rgba(147,51,234,.15), transparent 25%),
+#050816;
+}
+
+/* 🔥 CELEBRATION */
+
+.celebration-wrapper{
+position:fixed;
+top:0;
+left:0;
+
+width:100%;
+height:100%;
+
+background:rgba(0,0,0,.75);
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+z-index:99999;
+
+animation:fadeIn .4s ease;
+}
+
+.celebration-popup{
+
+width:600px;
+max-width:90%;
+
+padding:45px;
+
+border-radius:30px;
+
+text-align:center;
+
+background:
+linear-gradient(
+135deg,
+rgba(0,242,254,.18),
+rgba(147,51,234,.25)
+);
+
+backdrop-filter:blur(18px);
+
+border:2px solid rgba(255,255,255,.08);
+
+box-shadow:
+0 0 60px rgba(0,242,254,.35),
+0 0 100px rgba(147,51,234,.25);
+
+animation:popupScale .5s ease;
+}
+
+.trophy{
+font-size:90px;
+margin-bottom:15px;
+
+animation:bounce 1s infinite;
+}
+
+.celebration-popup h1{
+
+font-size:44px;
+font-weight:900;
+
+background:linear-gradient(
+90deg,
+#fbbf24,
+#fff,
+#f59e0b
+);
+
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+
+margin-bottom:20px;
+}
+
+.celebration-popup p{
+font-size:24px;
+line-height:1.6;
+font-weight:700;
+color:white;
+}
+
+.fireworks{
+margin-top:25px;
+font-size:34px;
+
+animation:sparkle 1s infinite alternate;
+}
+
+/* POPUP BUTTONS */
+
+.popup-actions{
+margin-top:30px;
+
+display:flex;
+justify-content:center;
+gap:18px;
+flex-wrap:wrap;
+}
+
+.popup-btn{
+
+padding:14px 28px;
+
+border:none;
+border-radius:14px;
+
+text-decoration:none;
+
+font-size:15px;
+font-weight:700;
+
+cursor:pointer;
+
+transition:.3s;
+}
+
+/* CONTINUE */
+
+.continue-btn{
+
+background:linear-gradient(
+90deg,
+#22c55e,
+#16a34a
+);
+
+color:white;
+}
+
+.continue-btn:hover{
+transform:translateY(-3px);
+box-shadow:0 0 25px rgba(34,197,94,.4);
+}
+
+/* DASHBOARD */
+
+.dashboard-btn{
+
+background:linear-gradient(
+90deg,
+#3b82f6,
+#9333ea
+);
+
+color:white;
+display:flex;
+align-items:center;
+}
+
+.dashboard-btn:hover{
+transform:translateY(-3px);
+box-shadow:0 0 25px rgba(59,130,246,.4);
+}
+
+@keyframes sparkle{
+from{
+transform:scale(1);
+opacity:.7;
+}
+to{
+transform:scale(1.1);
+opacity:1;
+}
+}
+
+@keyframes bounce{
+0%,100%{
+transform:translateY(0);
+}
+50%{
+transform:translateY(-10px);
+}
+}
+
+@keyframes popupScale{
+from{
+opacity:0;
+transform:scale(.7);
+}
+to{
+opacity:1;
+transform:scale(1);
+}
+}
+
+@keyframes fadeIn{
+from{
+opacity:0;
+}
+to{
+opacity:1;
+}
+}
+
+/* TOPBAR */
+
+.topbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+padding:28px 40px;
+
+background:rgba(255,255,255,.05);
+
+backdrop-filter:blur(16px);
+
+border-bottom:1px solid rgba(255,255,255,.08);
+
+position:sticky;
+top:0;
+z-index:999;
+
+box-shadow:0 10px 40px rgba(0,0,0,.35);
+}
+
+/* LEFT */
+
+.auction-info{
+display:flex;
+align-items:center;
+gap:22px;
+}
+
+/* LOGO */
+
+.auction-logo{
+width:90px;
+height:90px;
+border-radius:50%;
+border:4px solid #00f2fe;
+object-fit:cover;
+
+animation:logoGlow 2s ease infinite alternate;
+}
+
+@keyframes logoGlow{
+from{
+box-shadow:0 0 10px rgba(0,242,254,.3);
+}
+to{
+box-shadow:0 0 35px rgba(0,242,254,.8);
+}
+}
+
+/* TITLE */
+
+.mega-title{
+
+font-size:42px;
+font-weight:900;
+
+background:linear-gradient(
+90deg,
+#00f2fe,
+#3b82f6,
+#9333ea,
+#00f2fe
+);
+
+background-size:300%;
+
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+
+animation:gradientMove 5s linear infinite;
+}
+
+@keyframes gradientMove{
+0%{
+background-position:0%;
+}
+100%{
+background-position:300%;
+}
+}
+
+/* AUCTION NAME */
+
+.auction-name{
+margin-top:6px;
+font-size:22px;
+font-weight:600;
+color:white;
+}
+
+/* LIVE STATUS */
+
+.live-status{
+margin-top:10px;
+display:flex;
+align-items:center;
+gap:10px;
+
+font-size:14px;
+font-weight:700;
+color:#22c55e;
+letter-spacing:1px;
+}
+
+/* LIVE DOT */
+
+.live-dot{
+width:12px;
+height:12px;
+border-radius:50%;
+background:#22c55e;
+
+animation:pulse 1s infinite;
+}
+
+@keyframes pulse{
+0%{
+transform:scale(1);
+opacity:1;
+}
+50%{
+transform:scale(1.4);
+opacity:.5;
+}
+100%{
+transform:scale(1);
+opacity:1;
+}
+}
+
+/* ACTIONS */
+
+.top-actions{
+display:flex;
+gap:15px;
+}
+
+/* BACK BUTTON */
+
+.back-btn{
+padding:14px 28px;
+border-radius:14px;
+text-decoration:none;
+
+background:rgba(255,255,255,.08);
+color:white;
+
+font-weight:700;
+transition:.3s;
+}
+
+.back-btn:hover{
+background:linear-gradient(90deg,#00f2fe,#3b82f6);
+transform:translateY(-3px);
+box-shadow:0 0 25px rgba(0,242,254,.35);
+}
+
+/* RESET BUTTON */
+
+.reset-btn{
+padding:14px 28px;
+border-radius:14px;
+text-decoration:none;
+
+background:linear-gradient(90deg,#ef4444,#dc2626);
+
+color:white;
+font-weight:700;
+
+transition:.3s;
+}
+
+.reset-btn:hover{
+transform:translateY(-3px);
+box-shadow:0 0 30px rgba(239,68,68,.45);
+}
+
+/* MAIN */
+
+.main{
+display:grid;
+grid-template-columns:1.1fr 1fr 1fr;
+gap:25px;
+padding:35px;
+}
+
+/* CARD */
+
+.card{
+background:rgba(255,255,255,.05);
+border-radius:24px;
+padding:25px;
+backdrop-filter:blur(12px);
+
+border:1px solid rgba(255,255,255,.05);
+
+transition:.4s;
+}
+
+.card:hover{
+transform:translateY(-4px);
+box-shadow:0 0 30px rgba(0,242,254,.12);
+}
+
+/* PLAYER IMAGE */
+
+.player-img{
+width:240px;
+height:240px;
+border-radius:24px;
+object-fit:cover;
+border:4px solid #00f2fe;
+
+display:block;
+margin:auto;
+
+animation:playerGlow 2s ease infinite alternate;
+}
+
+@keyframes playerGlow{
+from{
+box-shadow:0 0 10px rgba(0,242,254,.2);
+}
+to{
+box-shadow:0 0 35px rgba(0,242,254,.6);
+}
+}
+
+/* PLAYER */
+
+.player-name{
+text-align:center;
+font-size:32px;
+margin-top:20px;
+font-weight:700;
+}
+
+.category{
+text-align:center;
+color:#00f2fe;
+margin-top:10px;
+font-size:16px;
+}
+
+/* BID BOX */
+
+.bid-box{
+text-align:center;
+margin-top:30px;
+}
+
+.bid-title{
+font-size:16px;
+color:#aaa;
+margin-bottom:10px;
+}
+
+.bid-price{
+font-size:60px;
+font-weight:800;
+color:#22c55e;
+
+animation:priceGlow 1.5s infinite alternate;
+}
+
+@keyframes priceGlow{
+from{
+text-shadow:0 0 10px rgba(34,197,94,.3);
+}
+to{
+text-shadow:0 0 30px rgba(34,197,94,.8);
+}
+}
+
+/* CURRENT TEAM */
+
+.current-team{
+margin-top:25px;
+padding:18px;
+border-radius:18px;
+background:rgba(255,255,255,.04);
+text-align:center;
+}
+
+.current-team img{
+width:80px;
+height:80px;
+border-radius:50%;
+object-fit:cover;
+border:3px solid #fbbf24;
+margin-bottom:10px;
+}
+
+/* RANDOM BUTTON */
+
+.random-btn{
+margin-top:20px;
+width:100%;
+padding:16px;
+
+background:linear-gradient(90deg,#9333ea,#3b82f6);
+border:none;
+border-radius:14px;
+
+color:white;
+font-size:15px;
+font-weight:700;
+
+cursor:pointer;
+transition:.3s;
+}
+
+.random-btn:hover{
+transform:translateY(-3px);
+box-shadow:0 0 25px rgba(147,51,234,.4);
+}
+
+/* TEAM GRID */
+
+.team-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+margin-top:20px;
+}
+
+.team-card{
+background:rgba(255,255,255,.04);
+padding:18px;
+border-radius:18px;
+text-align:center;
+transition:.3s;
+}
+
+.team-card:hover{
+transform:translateY(-5px);
+box-shadow:0 0 25px rgba(251,191,36,.15);
+}
+
+.team-card img{
+width:70px;
+height:70px;
+border-radius:50%;
+object-fit:cover;
+border:3px solid #fbbf24;
+margin-bottom:10px;
+}
+
+.team-card h3{
+font-size:16px;
+margin-bottom:12px;
+}
+
+/* BID BUTTON */
+
+.bid-btn{
+width:100%;
+padding:12px;
+border:none;
+border-radius:12px;
+
+background:linear-gradient(90deg,#fbbf24,#f59e0b);
+
+color:black;
+font-weight:700;
+cursor:pointer;
+transition:.3s;
+}
+
+.bid-btn:hover{
+transform:scale(1.05);
+}
+
+/* ACTIONS */
+
+.action-buttons{
+display:flex;
+gap:15px;
+margin-top:35px;
+}
+
+.action-buttons a{
+flex:1;
+}
+
+.action-btn{
+width:100%;
+padding:16px;
+border:none;
+border-radius:14px;
+font-size:15px;
+font-weight:700;
+cursor:pointer;
+transition:.3s;
+}
+
+.sold{
+background:linear-gradient(90deg,#22c55e,#16a34a);
+color:white;
+}
+
+.unsold{
+background:linear-gradient(90deg,#ef4444,#dc2626);
+color:white;
+}
+
+.action-btn:hover{
+transform:translateY(-3px);
+}
+
+.history-title{
+font-size:22px;
+margin-bottom:20px;
+color:#00f2fe;
+}
+
+.history-item{
+display:flex;
+align-items:center;
+gap:15px;
+
+background:rgba(255,255,255,.04);
+
+padding:14px;
+border-radius:14px;
+
+margin-bottom:12px;
+}
+
+.history-item img{
+width:55px;
+height:55px;
+border-radius:50%;
+object-fit:cover;
+}
+
+.empty{
+text-align:center;
+color:#888;
+margin-top:40px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- 🔥 CELEBRATION MESSAGE -->
+
+{% if messages %}
+
+<div class="celebration-wrapper">
+
+{% for message in messages %}
+
+<div class="celebration-popup">
+
+<div class="trophy">
+🏆
+</div>
+
+<h1>CONGRATULATIONS!</h1>
+
+<p>{{ message }}</p>
+
+<div class="fireworks">
+✨ 🎉 🔥 🎊 ✨
+</div>
+
+<div class="popup-actions">
+
+<button onclick="closePopup()" class="popup-btn continue-btn">
+Continue Auction
+</button>
+
+<a href="{% url 'my_auctions' %}" class="popup-btn dashboard-btn">
+Back to Dashboard
+</a>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endif %}
+
+<!-- TOPBAR -->
+
+<div class="topbar">
+
+<div class="auction-info">
+
+<img
+src="{{ auction.auction_logo.url }}"
+class="auction-logo"
+>
+
+<div>
+
+<h1 class="mega-title">
+🏏 LIVE BIDDING DASHBOARD
+</h1>
+
+<h2 class="auction-name">
+{{ auction.auction_name }}
+</h2>
+
+<div class="live-status">
+<span class="live-dot"></span>
+LIVE AUCTION RUNNING
+</div>
+
+</div>
+
+</div>
+
+<div class="top-actions">
+
+<a href="{% url 'my_auctions' %}" class="back-btn">
+← Back
+</a>
+
+<a href="{% url 'undo_last_bid' auction.id %}" class="reset-btn">
+↩ Undo
+</a>
+
+</div>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="main">
+
+<!-- LEFT -->
+
+<div class="card">
+
+{% if current_player %}
+
+<img
+src="{{ current_player.player_image.url }}"
+class="player-img"
+>
+
+<div class="player-name">
+{{ current_player.first_name }} {{ current_player.last_name }}
+</div>
+
+<div class="category">
+{{ current_player.get_category_display }}
+</div>
+
+<div class="bid-box">
+
+<div class="bid-title">
+Current Price
+</div>
+
+<div class="bid-price">
+₹ {{ current_player.sold_price|default:current_player.base_price }}
+</div>
+
+</div>
+
+{% if current_player.team %}
+
+<div class="current-team">
+
+<img src="{{ current_player.team.team_logo.url }}">
+
+<h3>{{ current_player.team.team_name }}</h3>
+
+</div>
+
+{% endif %}
+
+<a href="{% url 'random_player' auction.id %}">
+<button class="random-btn">
+🎲 Random Player
+</button>
+</a>
+
+{% else %}
+
+<div class="empty">
+No Pending Players
+</div>
+
+{% endif %}
+
+</div>
+
+<!-- CENTER -->
+
+<div class="card">
+
+<h2 class="history-title">
+🏏 Teams
+</h2>
+
+<div class="team-grid">
+
+{% for team in teams %}
+
+<div class="team-card">
+
+<img src="{{ team.team_logo.url }}">
+
+<h3>{{ team.team_name }}</h3>
+
+{% if current_player %}
+
+<a href="{% url 'place_bid' current_player.id team.id %}">
+
+<button class="bid-btn">
+BID NOW
+</button>
+
+</a>
+
+{% endif %}
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% if current_player %}
+
+<div class="action-buttons">
+
+<a href="{% url 'sold_player' current_player.id %}">
+<button class="action-btn sold">
+✅ SOLD
+</button>
+</a>
+
+<a href="{% url 'unsold_player' current_player.id %}">
+<button class="action-btn unsold">
+❌ UNSOLD
+</button>
+</a>
+
+</div>
+
+{% endif %}
+
+</div>
+
+<!-- RIGHT -->
+
+<div class="card">
+
+<h2 class="history-title">
+🔥 Recent Sold Players
+</h2>
+
+{% for player in sold_players %}
+
+<div class="history-item">
+
+<img src="{{ player.player_image.url }}">
+
+<div>
+
+<b>
+{{ player.first_name }} {{ player.last_name }}
+</b>
+
+<br>
+
+<small>
+{{ player.team.team_name }}
+</small>
+
+<br>
+
+<small>
+₹ {{ player.sold_price }}
+</small>
+
+</div>
+
+</div>
+
+{% empty %}
+
+<div class="empty">
+No sold players yet
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+<script>
+
+function closePopup(){
+
+const popup=document.querySelector('.celebration-wrapper');
+
+if(popup){
+popup.style.display='none';
+}
+
+}
+
+</script>
+
+</body>
+</html>

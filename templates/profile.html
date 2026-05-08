@@ -1,0 +1,554 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Elite Profile | Cricket Bidding</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+--bg:#020408;
+--card-bg:rgba(10,15,25,.82);
+--primary:#fbbf24;
+--secondary:#3b82f6;
+--text:#f8fafc;
+}
+
+/* RESET */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Inter',sans-serif;
+}
+
+/* BODY */
+body{
+min-height:100vh;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+overflow:hidden;
+position:relative;
+
+background:
+linear-gradient(
+135deg,
+#020617 0%,
+#071226 30%,
+#0f172a 60%,
+#111827 100%
+);
+}
+
+/* SOFT GLOW */
+body::before{
+content:'';
+
+position:absolute;
+
+width:180%;
+height:180%;
+
+background:
+
+radial-gradient(
+circle at 20% 20%,
+rgba(59,130,246,.12),
+transparent 22%
+),
+
+radial-gradient(
+circle at 80% 30%,
+rgba(251,191,36,.08),
+transparent 22%
+),
+
+radial-gradient(
+circle at 50% 70%,
+rgba(147,51,234,.10),
+transparent 25%
+);
+
+filter:blur(40px);
+
+opacity:.9;
+
+animation:softPulse 8s ease-in-out infinite alternate;
+}
+
+/* PARTICLES */
+body::after{
+content:'';
+
+position:absolute;
+width:100%;
+height:100%;
+
+background-image:
+radial-gradient(rgba(255,255,255,.10) 1px, transparent 1px);
+
+background-size:70px 70px;
+
+opacity:.08;
+
+animation:pulseParticles 8s ease infinite;
+}
+
+/* ANIMATIONS */
+@keyframes softPulse{
+from{
+opacity:.75;
+transform:scale(1);
+}
+to{
+opacity:1;
+transform:scale(1.03);
+}
+}
+
+@keyframes pulseParticles{
+0%,100%{
+opacity:.05;
+}
+50%{
+opacity:.12;
+}
+}
+
+/* FLOATING LIGHTS */
+.light{
+position:absolute;
+border-radius:50%;
+filter:blur(100px);
+opacity:.12;
+}
+
+.light1{
+width:260px;
+height:260px;
+background:#3b82f6;
+top:-80px;
+left:-80px;
+}
+
+.light2{
+width:220px;
+height:220px;
+background:#9333ea;
+bottom:-70px;
+right:-70px;
+}
+
+.light3{
+width:180px;
+height:180px;
+background:#00f2fe;
+top:50%;
+left:60%;
+}
+
+/* PROFILE CONTAINER */
+.profile-container{
+position:relative;
+width:460px;
+padding:1px;
+border-radius:34px;
+
+background:linear-gradient(
+135deg,
+rgba(59,130,246,.35),
+rgba(251,191,36,.18),
+rgba(147,51,234,.25)
+);
+
+box-shadow:
+0 20px 80px rgba(0,0,0,.85),
+0 0 30px rgba(59,130,246,.08);
+
+transition:.45s ease;
+
+animation:cardEnter .8s ease;
+
+z-index:2;
+}
+
+/* ENTRY */
+@keyframes cardEnter{
+from{
+opacity:0;
+transform:translateY(20px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+/* HOVER */
+.profile-container:hover{
+transform:
+translateY(-8px)
+scale(1.015);
+
+box-shadow:
+0 30px 90px rgba(0,0,0,.9),
+0 0 40px rgba(59,130,246,.18);
+}
+
+/* CARD */
+.profile-card{
+position:relative;
+background:var(--card-bg);
+backdrop-filter:blur(30px);
+border-radius:33px;
+padding:55px 42px;
+text-align:center;
+overflow:hidden;
+border:1px solid rgba(255,255,255,.04);
+}
+
+/* GLASS LIGHT */
+.profile-card::before{
+content:'';
+position:absolute;
+top:0;
+left:-120%;
+width:60%;
+height:100%;
+
+background:linear-gradient(
+90deg,
+transparent,
+rgba(255,255,255,.04),
+transparent
+);
+
+transform:skewX(-20deg);
+
+animation:glassMove 8s linear infinite;
+}
+
+@keyframes glassMove{
+to{
+left:180%;
+}
+}
+
+/* AVATAR */
+.avatar-wrapper{
+position:relative;
+width:145px;
+height:145px;
+margin:0 auto 30px;
+}
+
+/* SOFT RING */
+.avatar-wrapper::after{
+content:'';
+position:absolute;
+inset:-4px;
+border-radius:50%;
+
+background:conic-gradient(
+from 0deg,
+var(--primary),
+var(--secondary),
+var(--primary)
+);
+
+z-index:-1;
+
+animation:ringGlow 4s ease-in-out infinite alternate;
+
+filter:blur(10px);
+}
+
+@keyframes ringGlow{
+from{
+opacity:.7;
+filter:blur(8px);
+}
+to{
+opacity:1;
+filter:blur(14px);
+}
+}
+
+/* IMAGE */
+.profile-img{
+width:100%;
+height:100%;
+border-radius:50%;
+object-fit:cover;
+
+border:5px solid rgba(255,255,255,.05);
+
+background:var(--bg);
+
+transition:.4s;
+}
+
+/* IMAGE HOVER */
+.profile-container:hover .profile-img{
+transform:scale(1.03);
+}
+
+/* NAME */
+h2{
+font-family:'Syncopate',sans-serif;
+font-size:18px;
+text-transform:uppercase;
+letter-spacing:4px;
+color:white;
+margin-bottom:8px;
+
+text-shadow:0 0 20px rgba(255,255,255,.10);
+}
+
+/* EMAIL */
+.email{
+color:#94a3b8;
+font-size:13px;
+margin-top:5px;
+}
+
+/* ROLE */
+.role-tag{
+display:inline-block;
+
+border:1px solid rgba(251,191,36,.18);
+
+color:var(--primary);
+
+padding:5px 18px;
+
+border-radius:8px;
+
+font-size:10px;
+font-weight:900;
+
+text-transform:uppercase;
+letter-spacing:2px;
+
+margin-bottom:25px;
+
+background:rgba(251,191,36,.05);
+}
+
+/* GRID */
+.info-grid{
+text-align:left;
+margin-top:25px;
+}
+
+/* INFO CARD */
+.info-item{
+background:rgba(0,0,0,.35);
+
+border:1px solid rgba(255,255,255,.03);
+
+padding:18px;
+
+border-radius:14px;
+
+margin-bottom:12px;
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+transition:.3s;
+}
+
+/* HOVER */
+.info-item:hover{
+border-color:rgba(59,130,246,.18);
+background:rgba(59,130,246,.04);
+
+transform:translateX(3px);
+}
+
+/* LABEL */
+.label{
+color:#64748b;
+font-size:11px;
+text-transform:uppercase;
+font-weight:800;
+letter-spacing:1.5px;
+}
+
+/* VALUE */
+.value{
+color:#f8fafc;
+font-size:14px;
+font-weight:700;
+}
+
+/* ACTIONS */
+.actions{
+margin-top:35px;
+}
+
+/* DELETE BUTTON */
+.delete-btn{
+width:100%;
+padding:16px;
+
+background:linear-gradient(
+90deg,
+rgba(127,29,29,.22),
+rgba(239,68,68,.12)
+);
+
+color:#fecaca;
+
+border:1px solid rgba(239,68,68,.18);
+
+border-radius:12px;
+
+font-size:12px;
+font-weight:800;
+
+text-transform:uppercase;
+letter-spacing:2px;
+
+cursor:pointer;
+
+transition:.35s;
+}
+
+/* DELETE HOVER */
+.delete-btn:hover{
+background:#dc2626;
+color:white;
+
+transform:translateY(-2px);
+
+box-shadow:
+0 0 25px rgba(239,68,68,.28);
+}
+
+/* DASHBOARD */
+.dashboard-link{
+display:block;
+margin-top:28px;
+
+color:#94a3b8;
+
+text-decoration:none;
+
+font-size:11px;
+font-weight:700;
+
+letter-spacing:1px;
+
+transition:.3s;
+}
+
+/* DASHBOARD HOVER */
+.dashboard-link:hover{
+color:var(--secondary);
+letter-spacing:2px;
+}
+
+/* MOBILE */
+@media(max-width:520px){
+
+.profile-container{
+width:95%;
+}
+
+.profile-card{
+padding:40px 25px;
+}
+
+h2{
+font-size:15px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- LIGHTS -->
+<div class="light light1"></div>
+<div class="light light2"></div>
+<div class="light light3"></div>
+
+<div class="profile-container">
+
+<div class="profile-card">
+
+<div class="avatar-wrapper">
+
+<img
+src="{% if profile.profile_pic %}{{ profile.profile_pic.url }}{% else %}{% static 'images/profile_default.jpg' %}{% endif %}"
+class="profile-img"
+>
+
+</div>
+
+<div class="role-tag">
+Elite Member
+</div>
+
+<h2>{{ request.user.username }}</h2>
+
+<p class="email">
+{{ request.user.email }}
+</p>
+
+<div class="info-grid">
+
+<div class="info-item">
+<span class="label">Identity</span>
+<span class="value">{{ profile.full_name }}</span>
+</div>
+
+<div class="info-item">
+<span class="label">Mobile</span>
+<span class="value">{{ profile.mobile_number }}</span>
+</div>
+
+<div class="info-item">
+<span class="label">Birthday</span>
+<span class="value">{{ profile.date_of_birth }}</span>
+</div>
+
+</div>
+
+<div class="actions">
+
+<form method="POST" action="{% url 'delete_account' %}">
+{% csrf_token %}
+
+<button class="delete-btn">
+Delete Account
+</button>
+
+</form>
+
+<a href="{% url 'dashboard' %}" class="dashboard-link">
+← BACK TO DASHBOARD
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>

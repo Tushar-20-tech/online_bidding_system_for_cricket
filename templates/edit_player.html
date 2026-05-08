@@ -1,0 +1,273 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<title>Edit Player</title>
+
+<style>
+
+/* ===== GLOBAL ===== */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI', sans-serif;
+}
+
+body{
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:#0a122a;
+
+background-image:
+radial-gradient(circle at 20% 20%, rgba(0,242,254,0.12), transparent 40%),
+radial-gradient(circle at 80% 80%, rgba(147,51,234,0.12), transparent 40%);
+}
+
+/* ===== CARD ===== */
+.container{
+width:700px;
+background:rgba(255,255,255,0.06);
+padding:40px;
+border-radius:22px;
+backdrop-filter:blur(16px);
+box-shadow:0 25px 60px rgba(0,0,0,0.5);
+animation:fadeUp .7s ease;
+}
+
+/* ===== ANIMATION ===== */
+@keyframes fadeUp{
+from{opacity:0; transform:translateY(40px);}
+to{opacity:1; transform:translateY(0);}
+}
+
+/* ===== HEADER ===== */
+.header{
+text-align:center;
+margin-bottom:30px;
+}
+
+.header h2{
+font-size:28px;
+font-weight:700;
+background:linear-gradient(90deg,#00f2fe,#9333ea);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+/* ===== IMAGE ===== */
+.preview{
+display:flex;
+justify-content:center;
+margin-bottom:20px;
+}
+
+.preview img{
+width:90px;
+height:90px;
+border-radius:50%;
+border:3px solid #00f2fe;
+object-fit:cover;
+}
+
+/* ===== FORM GRID ===== */
+.form-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:18px;
+}
+
+/* FULL WIDTH */
+.full{
+grid-column:span 2;
+}
+
+/* ===== INPUT ===== */
+.input-box{
+position:relative;
+}
+
+.input-box input,
+.input-box select{
+width:100%;
+padding:14px;
+border-radius:10px;
+border:1px solid rgba(255,255,255,0.2);
+background:rgba(255,255,255,0.05);
+color:white;
+outline:none;
+font-size:14px;
+transition:.3s;
+}
+
+/* LABEL */
+.input-box label{
+position:absolute;
+top:-8px;
+left:12px;
+font-size:11px;
+background:#0a122a;
+padding:0 6px;
+color:#00f2fe;
+}
+
+/* FOCUS */
+.input-box input:focus,
+.input-box select:focus{
+border-color:#00f2fe;
+box-shadow:0 0 10px rgba(0,242,254,.4);
+}
+
+/* FILE INPUT */
+.file input{
+background:white;
+color:black;
+}
+
+/* ===== BUTTONS ===== */
+.actions{
+margin-top:30px;
+display:flex;
+justify-content:center;
+gap:20px;
+}
+
+/* SAVE */
+.save{
+padding:14px 40px;
+border:none;
+border-radius:12px;
+background:linear-gradient(90deg,#00f2fe,#3b82f6);
+color:white;
+cursor:pointer;
+font-size:15px;
+transition:.3s;
+}
+
+.save:hover{
+transform:translateY(-2px);
+box-shadow:0 10px 25px rgba(0,242,254,.5);
+}
+
+/* BACK */
+.back{
+text-decoration:none;
+padding:14px 40px;
+border-radius:12px;
+background:rgba(255,255,255,0.1);
+color:white;
+transition:.3s;
+}
+
+.back:hover{
+background:rgba(255,255,255,0.2);
+}
+
+/* RESPONSIVE */
+@media(max-width:700px){
+.container{
+width:90%;
+padding:25px;
+}
+.form-grid{
+grid-template-columns:1fr;
+}
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+<h2>✏️ Edit Player</h2>
+</div>
+
+<!-- PROFILE IMAGE -->
+<div class="preview">
+<img src="{{ player.player_image.url }}">
+</div>
+
+<form method="POST" enctype="multipart/form-data">
+{% csrf_token %}
+
+<div class="form-grid">
+
+<!-- IMAGE -->
+<div class="input-box file full">
+<input type="file" name="player_image" accept=".jpg">
+<label>Player Image (JPG only)</label>
+</div>
+
+<!-- NAME -->
+<div class="input-box">
+<input name="first_name" value="{{ player.first_name }}" required>
+<label>First Name</label>
+</div>
+
+<div class="input-box">
+<input name="last_name" value="{{ player.last_name }}" required>
+<label>Last Name</label>
+</div>
+
+<!-- CATEGORY -->
+<div class="input-box full">
+<select name="category" required>
+{% for val,label in player.CATEGORY_CHOICES %}
+<option value="{{ val }}" {% if player.category == val %}selected{% endif %}>
+{{ label }}
+</option>
+{% endfor %}
+</select>
+<label>Category</label>
+</div>
+
+<!-- CONTACT -->
+<div class="input-box">
+<input name="mobile" value="{{ player.mobile }}">
+<label>Mobile (Optional)</label>
+</div>
+
+<div class="input-box">
+<input name="email" value="{{ player.email }}">
+<label>Email (Optional)</label>
+</div>
+
+<!-- DOB -->
+<div class="input-box full">
+<input type="date" name="dob" value="{{ player.dob|date:'Y-m-d' }}">
+<label>Date of Birth</label>
+</div>
+
+<!-- SIZE -->
+<div class="input-box">
+<input name="tshirt_size" value="{{ player.tshirt_size }}">
+<label>T-Shirt Size</label>
+</div>
+
+<div class="input-box">
+<input name="trouser_size" value="{{ player.trouser_size }}">
+<label>Trouser Size</label>
+</div>
+
+</div>
+
+<!-- BUTTONS -->
+<div class="actions">
+<button class="save">Update Player</button>
+<a href="{% url 'players' player.auction.id %}" class="back">Cancel</a>
+</div>
+
+</form>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,264 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<title>Teams</title>
+
+<style>
+
+/* BODY */
+body{
+background:#0a122a;
+color:white;
+font-family:'Segoe UI';
+padding:50px;
+}
+
+/* TITLE */
+h1{
+font-size:36px;
+margin-bottom:30px;
+background:linear-gradient(90deg,#00f2fe,#9333ea);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+/* BACK */
+.back{
+display:inline-block;
+margin-bottom:25px;
+color:#aaa;
+text-decoration:none;
+transition:.3s;
+}
+
+.back:hover{
+color:#00f2fe;
+}
+
+/* FORM */
+.form-box{
+background:rgba(255,255,255,0.05);
+padding:25px;
+border-radius:16px;
+margin-bottom:40px;
+backdrop-filter:blur(10px);
+animation:fadeUp .6s ease;
+}
+
+/* INPUT */
+input{
+width:100%;
+padding:14px;
+border-radius:10px;
+border:none;
+margin-bottom:15px;
+outline:none;
+}
+
+/* BUTTON */
+button{
+padding:14px 35px;
+border:none;
+border-radius:10px;
+background:linear-gradient(90deg,#00f2fe,#3b82f6);
+color:white;
+cursor:pointer;
+transition:.3s;
+}
+
+button:hover{
+transform:scale(1.05);
+box-shadow:0 0 20px #00f2fe;
+}
+
+/* DELETE BUTTON */
+.delete-btn{
+margin-top:12px;
+padding:8px 18px;
+border:none;
+border-radius:8px;
+background:rgba(239,68,68,0.2);
+color:#ef4444;
+cursor:pointer;
+font-size:13px;
+transition:.3s;
+}
+
+.delete-btn:hover{
+background:#ef4444;
+color:white;
+transform:scale(1.05);
+box-shadow:0 0 15px rgba(239,68,68,.5);
+}
+
+/* 🔥 MESSAGE SYSTEM */
+#msg-box{
+margin-bottom:20px;
+}
+
+.msg{
+padding:12px 18px;
+border-radius:10px;
+margin-bottom:10px;
+font-size:14px;
+animation:fadeSlide .4s ease;
+}
+
+/* SUCCESS */
+.msg.success{
+background:rgba(34,197,94,0.15);
+color:#22c55e;
+border-left:4px solid #22c55e;
+}
+
+/* ERROR */
+.msg.error{
+background:rgba(239,68,68,0.15);
+color:#ef4444;
+border-left:4px solid #ef4444;
+}
+
+/* GRID */
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:25px;
+}
+
+/* CARD */
+.card{
+background:rgba(255,255,255,0.05);
+padding:20px;
+border-radius:16px;
+text-align:center;
+transition:.4s;
+animation:fadeUp .6s ease;
+}
+
+.card:hover{
+transform:translateY(-8px) scale(1.05);
+box-shadow:0 0 25px rgba(0,242,254,.3);
+}
+
+/* IMAGE */
+.card img{
+width:90px;
+height:90px;
+border-radius:50%;
+border:3px solid #00f2fe;
+margin-bottom:10px;
+object-fit:cover;
+}
+
+/* NAME */
+.card h3{
+font-size:18px;
+}
+
+/* EMPTY */
+.empty{
+color:#aaa;
+text-align:center;
+margin-top:20px;
+}
+
+/* ANIMATIONS */
+@keyframes fadeUp{
+from{opacity:0; transform:translateY(30px);}
+to{opacity:1; transform:translateY(0);}
+}
+
+@keyframes fadeSlide{
+from{opacity:0; transform:translateY(-10px);}
+to{opacity:1; transform:translateY(0);}
+}
+
+</style>
+
+</head>
+
+<body>
+
+<a href="{% url 'dashboard' %}" class="back">← Back to Dashboard</a>
+
+<h1>🏏 Teams — {{ auction.auction_name }}</h1>
+
+<!-- 🔥 MESSAGE -->
+{% if messages %}
+<div id="msg-box">
+    {% for message in messages %}
+        <div class="msg {{ message.tags }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- FORM -->
+<div class="form-box">
+
+<form method="POST" enctype="multipart/form-data">
+{% csrf_token %}
+
+<input type="file" name="team_logo" accept=".jpg" required>
+
+<input name="team_name" placeholder="Team Name" required>
+
+<button>Add Team</button>
+
+</form>
+
+</div>
+
+<!-- TEAM LIST -->
+<div class="grid">
+
+{% for team in teams %}
+
+<div class="card">
+
+<img src="{{ team.team_logo.url }}">
+
+<h3>{{ team.team_name }}</h3>
+
+<form action="{% url 'delete_team' team.id %}" method="POST" onsubmit="return confirmDelete()">
+{% csrf_token %}
+<button type="submit" class="delete-btn">🗑 Delete</button>
+</form>
+
+</div>
+
+{% empty %}
+
+<div class="empty">No teams added yet</div>
+
+{% endfor %}
+
+</div>
+
+<script>
+
+/* DELETE CONFIRM */
+function confirmDelete(){
+return confirm("⚠️ Are you sure you want to delete this team?\nThis action cannot be undone.");
+}
+
+/* 🔥 AUTO HIDE MESSAGE */
+setTimeout(()=>{
+    let msgBox = document.getElementById("msg-box");
+    if(msgBox){
+        msgBox.style.opacity = "0";
+        msgBox.style.transform = "translateY(-10px)";
+        msgBox.style.transition = "0.5s";
+        setTimeout(()=> msgBox.remove(), 500);
+    }
+}, 2500);
+
+</script>
+
+</body>
+
+</html>

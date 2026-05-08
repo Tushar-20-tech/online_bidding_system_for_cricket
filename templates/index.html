@@ -1,0 +1,1032 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Online Cricket Bidding System</title>
+
+<style>
+
+/* GLOBAL SETTINGS */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Segoe UI, sans-serif;
+}
+
+html{
+scroll-behavior:smooth;
+}
+
+body{
+
+background:
+linear-gradient(
+135deg,
+#f8fbff,
+#eef3ff,
+#ffffff
+);
+
+animation:fadeIn .8s ease-in-out;
+
+overflow-x:hidden;
+}
+
+@keyframes fadeIn{
+from{opacity:0;}
+to{opacity:1;}
+}
+
+/* NAVBAR */
+
+.navbar{
+
+display:flex;
+align-items:center;
+justify-content:space-between;
+
+padding:18px 70px;
+
+background:rgba(8,28,58,.95);
+
+backdrop-filter:blur(10px);
+
+color:white;
+
+position:sticky;
+top:0;
+z-index:1000;
+
+box-shadow:
+0px 6px 20px rgba(0,0,0,.25);
+}
+
+/* TITLE */
+
+.nav-title{
+
+font-size:30px;
+font-weight:800;
+
+background:
+linear-gradient(
+90deg,
+#4facfe,
+#00f2fe
+);
+
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+/* RIGHT */
+
+.nav-right{
+
+display:flex;
+align-items:center;
+gap:25px;
+}
+
+/* NAV */
+
+nav a{
+
+color:white;
+text-decoration:none;
+
+margin:0 10px;
+
+font-size:16px;
+font-weight:500;
+
+position:relative;
+}
+
+nav a::after{
+
+content:"";
+
+position:absolute;
+left:0;
+bottom:-6px;
+
+width:0%;
+height:2px;
+
+background:
+linear-gradient(
+90deg,
+#4facfe,
+#00f2fe
+);
+
+transition:.3s;
+}
+
+nav a:hover::after{
+width:100%;
+}
+
+/* BUTTONS */
+
+.auth-buttons{
+display:flex;
+gap:12px;
+}
+
+.auth-buttons button{
+
+padding:10px 22px;
+
+border-radius:8px;
+
+border:none;
+
+cursor:pointer;
+
+font-weight:600;
+
+transition:.3s;
+}
+
+/* LOGIN */
+
+.login{
+
+background:transparent;
+
+border:1px solid white;
+
+color:white;
+}
+
+.login:hover{
+
+background:white;
+
+color:#081c3a;
+}
+
+/* REGISTER */
+
+.register{
+
+background:
+linear-gradient(
+90deg,
+#4facfe,
+#00f2fe
+);
+
+color:white;
+}
+
+.register:hover{
+
+transform:translateY(-2px);
+
+box-shadow:
+0 10px 25px rgba(79,172,254,.35);
+}
+
+/* HERO */
+
+.hero{
+
+display:flex;
+align-items:center;
+justify-content:space-between;
+
+padding:90px 80px;
+
+background:
+linear-gradient(
+120deg,
+#eef3ff,
+#f8fbff
+);
+}
+
+/* LEFT */
+
+.hero-left{
+width:50%;
+}
+
+.hero-left h1{
+
+font-size:58px;
+
+line-height:1.2;
+
+margin-bottom:25px;
+
+color:#081c3a;
+}
+
+.hero-left p{
+
+font-size:19px;
+
+line-height:1.8;
+
+margin-bottom:35px;
+
+color:#555;
+}
+
+/* CTA */
+
+.cta-group{
+
+display:flex;
+gap:15px;
+}
+
+.primary{
+
+background:#2d6cdf;
+
+color:white;
+
+padding:16px 34px;
+
+border:none;
+
+border-radius:10px;
+
+font-size:16px;
+
+cursor:pointer;
+
+transition:.3s;
+}
+
+.primary:hover{
+
+transform:translateY(-3px);
+
+box-shadow:
+0 10px 25px rgba(45,108,223,.35);
+}
+
+.secondary{
+
+padding:16px 34px;
+
+border-radius:10px;
+
+border:2px solid #2d6cdf;
+
+background:white;
+
+color:#2d6cdf;
+
+cursor:pointer;
+
+font-size:16px;
+
+transition:.3s;
+}
+
+.secondary:hover{
+
+background:#2d6cdf;
+
+color:white;
+}
+
+/* HERO IMAGE */
+
+.hero-right img{
+
+width:540px;
+
+border-radius:20px;
+
+box-shadow:
+0px 20px 50px rgba(0,0,0,.18);
+
+animation:floatImage 4s ease-in-out infinite;
+}
+
+@keyframes floatImage{
+
+0%{
+transform:translateY(0);
+}
+
+50%{
+transform:translateY(-15px);
+}
+
+100%{
+transform:translateY(0);
+}
+}
+
+/* STATS */
+
+.stats{
+
+display:grid;
+
+grid-template-columns:
+repeat(4,1fr);
+
+gap:20px;
+
+padding:50px 80px;
+
+background:white;
+}
+
+.stats div{
+
+padding:30px;
+
+border-radius:18px;
+
+background:#f8fbff;
+
+text-align:center;
+
+font-size:18px;
+font-weight:700;
+
+color:#081c3a;
+
+transition:.3s;
+}
+
+.stats div:hover{
+
+transform:translateY(-8px);
+
+background:
+linear-gradient(
+135deg,
+#4facfe,
+#00f2fe
+);
+
+color:white;
+}
+
+/* FEATURES */
+
+.features{
+
+padding:100px 80px;
+
+text-align:center;
+
+background:#f4f7fc;
+}
+
+.features h2{
+
+font-size:42px;
+
+margin-bottom:50px;
+
+color:#081c3a;
+}
+
+/* GRID */
+
+.feature-grid{
+
+display:grid;
+
+grid-template-columns:
+repeat(4,1fr);
+
+gap:25px;
+}
+
+/* CARD */
+
+.card{
+
+background:white;
+
+padding:40px;
+
+border-radius:20px;
+
+box-shadow:
+0px 8px 25px rgba(0,0,0,.08);
+
+transition:.4s;
+}
+
+.card:hover{
+
+transform:
+translateY(-10px)
+scale(1.03);
+
+box-shadow:
+0px 20px 40px rgba(0,0,0,.12);
+}
+
+.card h3{
+
+margin-bottom:15px;
+
+font-size:24px;
+
+color:#081c3a;
+}
+
+.card p{
+
+font-size:15px;
+
+line-height:1.8;
+
+color:#666;
+}
+
+/* HOW IT WORKS */
+
+.how-section{
+
+padding:110px 80px;
+
+background:
+linear-gradient(
+135deg,
+#081c3a,
+#0f172a
+);
+
+color:white;
+
+text-align:center;
+}
+
+/* HOW TITLE */
+
+.how-title{
+
+font-size:52px;
+font-weight:900;
+
+margin-bottom:15px;
+
+background:
+linear-gradient(
+90deg,
+#00f2fe,
+#4facfe,
+#9333ea
+);
+
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+/* SUBTITLE */
+
+.how-subtitle{
+
+font-size:18px;
+
+color:#cbd5e1;
+
+margin-bottom:65px;
+}
+
+/* STEP GRID */
+
+.steps-grid{
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(260px,1fr));
+
+gap:28px;
+}
+
+/* STEP CARD */
+
+.step-card{
+
+background:
+rgba(255,255,255,.06);
+
+padding:35px;
+
+border-radius:24px;
+
+backdrop-filter:blur(12px);
+
+border:1px solid rgba(255,255,255,.08);
+
+transition:.4s;
+}
+
+.step-card:hover{
+
+transform:
+translateY(-10px)
+scale(1.03);
+
+box-shadow:
+0 0 35px rgba(0,242,254,.18);
+}
+
+/* NUMBER */
+
+.step-number{
+
+width:70px;
+height:70px;
+
+margin:auto;
+margin-bottom:22px;
+
+border-radius:50%;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-size:28px;
+font-weight:900;
+
+background:
+linear-gradient(
+135deg,
+#00f2fe,
+#3b82f6
+);
+
+color:white;
+
+box-shadow:
+0 0 25px rgba(0,242,254,.35);
+}
+
+/* STEP TITLE */
+
+.step-card h3{
+
+font-size:25px;
+
+margin-bottom:18px;
+}
+
+/* STEP TEXT */
+
+.step-card p{
+
+font-size:15px;
+
+line-height:1.9;
+
+color:#cbd5e1;
+}
+
+/* CONTACT */
+
+.contact{
+
+padding:70px;
+
+text-align:center;
+
+background:white;
+}
+
+.contact h2{
+
+font-size:40px;
+
+margin-bottom:20px;
+
+color:#081c3a;
+}
+
+.contact p{
+
+font-size:18px;
+
+color:#666;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1000px){
+
+.hero{
+flex-direction:column;
+gap:40px;
+}
+
+.hero-left{
+width:100%;
+}
+
+.hero-right img{
+width:100%;
+}
+
+.feature-grid{
+grid-template-columns:1fr 1fr;
+}
+
+.stats{
+grid-template-columns:1fr 1fr;
+}
+}
+
+@media(max-width:700px){
+
+.navbar{
+padding:18px 25px;
+flex-direction:column;
+gap:15px;
+}
+
+.hero{
+padding:60px 25px;
+}
+
+.features,
+.how-section{
+padding:80px 25px;
+}
+
+.feature-grid,
+.steps-grid{
+grid-template-columns:1fr;
+}
+
+.stats{
+grid-template-columns:1fr;
+padding:40px 25px;
+}
+
+.hero-left h1{
+font-size:42px;
+}
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<header class="navbar">
+
+<div class="nav-title">
+🏏 Online Cricket Bidding System
+</div>
+
+<div class="nav-right">
+
+<nav>
+
+<a href="#">Home</a>
+
+<a href="#how-it-works">
+How It Works
+</a>
+
+<a href="#contact">
+Contact
+</a>
+
+</nav>
+
+<div class="auth-buttons">
+
+<form action="{% url 'login' %}">
+<button type="submit" class="login">
+Login
+</button>
+</form>
+
+<form action="{% url 'register' %}">
+<button class="register">
+Register
+</button>
+</form>
+
+</div>
+
+</div>
+
+</header>
+
+<!-- HERO -->
+
+<section class="hero">
+
+<div class="hero-left">
+
+<h1>
+Smart Cricket Bidding.<br>
+Win Your Dream Players.
+</h1>
+
+<p>
+Participate in professional real-time cricket player auctions,
+build strategic squads,
+manage wallets,
+and experience modern live bidding dashboards.
+</p>
+
+<div class="cta-group">
+
+<form action="{% url 'register' %}">
+<button class="primary">
+Sign Up for Free
+</button>
+</form>
+
+<a href="#how-it-works">
+
+<button class="secondary">
+How It Works
+</button>
+
+</a>
+
+</div>
+
+</div>
+
+<div class="hero-right">
+
+<img src="{% static 'images/cricket.png' %}">
+
+</div>
+
+</section>
+
+<!-- STATS -->
+
+<section class="stats">
+
+<div>
+🏏 Live Player Auctions
+</div>
+
+<div>
+✅ Verified Team Owners
+</div>
+
+<div>
+💰 Smart Wallet System
+</div>
+
+<div>
+⚡ Fair Live Bidding
+</div>
+
+</section>
+
+<!-- FEATURES -->
+
+<section class="features">
+
+<h2>
+Why Choose CricketBid?
+</h2>
+
+<div class="feature-grid">
+
+<div class="card">
+
+<h3>🔒 Secure Auction</h3>
+
+<p>
+Encrypted and secure bidding environment
+for fair player auctions.
+</p>
+
+</div>
+
+<div class="card">
+
+<h3>⚡ Live Bidding</h3>
+
+<p>
+Real-time auction dashboard with
+instant player updates.
+</p>
+
+</div>
+
+<div class="card">
+
+<h3>💰 Team Wallet</h3>
+
+<p>
+Advanced purse management
+with smart bidding control.
+</p>
+
+</div>
+
+<div class="card">
+
+<h3>📊 Admin Dashboard</h3>
+
+<p>
+Professional monitoring panel
+with summary analytics.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- HOW IT WORKS -->
+
+<section id="how-it-works" class="how-section">
+
+<h2 class="how-title">
+🚀 How The Auction Software Works
+</h2>
+
+<p class="how-subtitle">
+Step-by-step workflow of the professional cricket auction system
+</p>
+
+<div class="steps-grid">
+
+<div class="step-card">
+
+<div class="step-number">
+1
+</div>
+
+<h3>Create Auction</h3>
+
+<p>
+Create a new cricket auction with purse amount,
+minimum bid,
+bid increase value
+and player limits.
+</p>
+
+</div>
+
+<div class="step-card">
+
+<div class="step-number">
+2
+</div>
+
+<h3>Add Players</h3>
+
+<p>
+Upload player photos,
+categories,
+details,
+sizes,
+and base price for bidding.
+</p>
+
+</div>
+
+<div class="step-card">
+
+<div class="step-number">
+3
+</div>
+
+<h3>Create Teams</h3>
+
+<p>
+Add teams with logos.
+Each team automatically gets
+their starting purse wallet.
+</p>
+
+</div>
+
+<div class="step-card">
+
+<div class="step-number">
+4
+</div>
+
+<h3>Open Dashboard</h3>
+
+<p>
+Launch the professional live bidding dashboard
+for real-time player auctions.
+</p>
+
+</div>
+
+<div class="step-card">
+
+<div class="step-number">
+5
+</div>
+
+<h3>Start Bidding</h3>
+
+<p>
+Click team buttons to place bids.
+Bid amounts automatically increase.
+</p>
+
+</div>
+
+<div class="step-card">
+
+<div class="step-number">
+6
+</div>
+
+<h3>Sell Players</h3>
+
+<p>
+Click SOLD to assign players to the
+highest bidding team securely.
+</p>
+
+</div>
+
+<div class="step-card">
+
+<div class="step-number">
+7
+</div>
+
+<h3>Wallet Tracking</h3>
+
+<p>
+Monitor remaining purse amount
+and spent budget live during auction.
+</p>
+
+</div>
+
+<div class="step-card">
+
+<div class="step-number">
+8
+</div>
+
+<h3>View Summary</h3>
+
+<p>
+Analyze team squads,
+unsold players,
+auction graphs
+and final bidding reports.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- CONTACT -->
+
+<section id="contact" class="contact">
+
+<h2>
+📞 Contact & Support
+</h2>
+
+<p>
+    TUSHAR_TEJAS_RAJATH_VIGNESH<br>
+    onlinebidding123@gmail.com<br>
+    +91 98765 43210<br>
+Professional online cricket auction management system
+for tournaments,
+clubs,
+and leagues.
+</p>
+
+</section>
+
+</body>
+
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Create Account | Cricket Bidding System</title>
+
+<style>
+
+/* RESET */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Segoe UI, sans-serif;
+}
+
+/* BODY */
+
+body{
+background:linear-gradient(135deg,#081c3a,#2d6cdf);
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+}
+
+/* HOME BUTTON */
+
+.home-btn{
+position:absolute;
+top:20px;
+left:20px;
+background:white;
+padding:8px 14px;
+border-radius:6px;
+text-decoration:none;
+font-weight:600;
+color:#081c3a;
+font-size:14px;
+}
+
+/* CARD */
+
+.container{
+background:white;
+width:100%;
+max-width:420px;
+padding:30px;
+border-radius:12px;
+box-shadow:0px 20px 50px rgba(0,0,0,.3);
+}
+
+/* HEADER */
+
+.header{
+text-align:center;
+margin-bottom:20px;
+}
+
+.header h2{
+color:#081c3a;
+}
+
+.header span{
+font-size:14px;
+color:#777;
+}
+
+/* PROFILE */
+
+.preview{
+width:70px;
+height:70px;
+border-radius:50%;
+margin:10px auto;
+display:block;
+object-fit:cover;
+border:2px solid #2d6cdf;
+}
+
+/* FORM */
+
+.form-group{
+margin-top:12px;
+}
+
+label{
+font-size:13px;
+color:#555;
+}
+
+/* INPUT */
+
+input{
+width:100%;
+padding:10px;
+margin-top:5px;
+border-radius:6px;
+border:1px solid #ddd;
+font-size:14px;
+}
+
+/* BUTTON */
+
+button{
+margin-top:15px;
+width:100%;
+padding:12px;
+background:#2d6cdf;
+color:white;
+border:none;
+border-radius:6px;
+font-size:15px;
+cursor:pointer;
+}
+
+/* FOOTER */
+
+.footer{
+margin-top:12px;
+text-align:center;
+font-size:13px;
+}
+
+.footer a{
+color:#2d6cdf;
+text-decoration:none;
+font-weight:600;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:480px){
+
+.container{
+padding:20px;
+}
+
+.home-btn{
+font-size:12px;
+padding:6px 10px;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<a href="{% url 'home' %}" class="home-btn">🏠 Home</a>
+
+<div class="container">
+
+<div class="header">
+<h2>🏏 Create Account</h2>
+<span>Join the Cricket Bidding Platform</span>
+</div>
+
+<img id="preview" class="preview"
+src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
+
+<form method="POST" enctype="multipart/form-data">
+
+{% csrf_token %}
+
+<div class="form-group">
+<label>Username</label>
+<input name="username" required>
+</div>
+
+<div class="form-group">
+<label>Full Name</label>
+<input name="full_name" required>
+</div>
+
+<div class="form-group">
+<label>Email</label>
+<input type="email" name="email" required>
+</div>
+
+<div class="form-group">
+<label>Mobile</label>
+<input name="mobile_number" required>
+</div>
+
+<div class="form-group">
+<label>Date of Birth</label>
+<input type="date" name="date_of_birth" required>
+</div>
+
+<div class="form-group">
+<label>Profile Image (JPG)</label>
+<input type="file" name="profile_pic" accept=".jpg"
+onchange="previewImage(event)" required>
+</div>
+
+<div class="form-group">
+<label>Password</label>
+<input type="password" name="password" required onkeyup="checkStrength(this.value)">
+<div id="strength"></div>
+</div>
+
+<div class="form-group">
+<label>Confirm Password</label>
+<input type="password" name="confirm_password" required>
+</div>
+
+<button>Create Account</button>
+
+</form>
+
+<div class="footer">
+Already registered? <a href="{% url 'login' %}">Login Now</a>
+</div>
+
+</div>
+
+<script>
+
+function previewImage(event){
+document.getElementById('preview').src =
+URL.createObjectURL(event.target.files[0]);
+}
+
+function checkStrength(password){
+
+let strength = document.getElementById("strength");
+
+if(password.length < 6){
+strength.innerHTML = "Weak";
+strength.style.color = "red";
+}
+else if(password.length < 10){
+strength.innerHTML = "Medium";
+strength.style.color = "orange";
+}
+else{
+strength.innerHTML = "Strong";
+strength.style.color = "green";
+}
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+body{
+font-family: Arial;
+margin:0;
+}
+
+.navbar{
+display:flex;
+justify-content:space-between;
+padding:20px;
+background:#081c3a;
+color:white;
+}
+
+nav a{
+margin:10px;
+color:white;
+text-decoration:none;
+}
+
+.hero{
+display:flex;
+padding:80px;
+}
+
+.hero-left{
+width:50%;
+}
+
+.hero-left h1{
+font-size:48px;
+}
+
+.primary{
+background:#2d6cdf;
+color:white;
+padding:15px 30px;
+border:none;
+margin-right:10px;
+}
+
+.secondary{
+padding:15px 30px;
+}
+
+.stats{
+display:flex;
+justify-content:space-around;
+padding:40px;
+background:#f3f6fb;
+}
+
+.features{
+padding:80px;
+text-align:center;
+}
+
+.feature-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:20px;
+}
+
+.card{
+padding:30px;
+background:white;
+box-shadow:0px 0px 10px #ddd;
+}

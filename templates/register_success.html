@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Registration Success</title>
+
+<style>
+
+body{
+
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+
+background:linear-gradient(120deg,#4facfe,#00f2fe);
+
+font-family:Segoe UI;
+
+}
+
+.card{
+
+background:white;
+padding:50px;
+border-radius:14px;
+text-align:center;
+
+}
+
+a{
+
+display:inline-block;
+margin-top:20px;
+background:#2d6cdf;
+padding:12px 24px;
+color:white;
+text-decoration:none;
+border-radius:6px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<h1>Registration Successful 🎉</h1>
+
+<p>Your account has been created securely.</p>
+
+<a href="{% url 'login' %}">Login Now</a>
+</div>
+
+</body>
+
+</html>

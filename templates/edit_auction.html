@@ -1,0 +1,270 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Edit Auction</title>
+
+<style>
+
+/* RESET */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI', sans-serif;
+}
+
+/* BODY */
+
+body{
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:#0a122a;
+color:white;
+
+background-image:
+radial-gradient(circle at 20% 20%, rgba(0,242,254,0.15), transparent 40%),
+radial-gradient(circle at 80% 80%, rgba(147,51,234,0.15), transparent 40%);
+}
+
+/* CONTAINER */
+
+.container{
+width:820px;
+background:rgba(255,255,255,0.05);
+padding:45px;
+border-radius:20px;
+backdrop-filter:blur(16px);
+box-shadow:0 0 40px rgba(0,0,0,.5);
+animation:fadeUp .6s ease;
+}
+
+/* ANIMATION */
+
+@keyframes fadeUp{
+from{opacity:0; transform:translateY(30px);}
+to{opacity:1; transform:translateY(0);}
+}
+
+/* TITLE */
+
+h2{
+text-align:center;
+margin-bottom:30px;
+font-size:26px;
+background:linear-gradient(90deg,#00f2fe,#9333ea);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+/* TOP SECTION */
+
+.top{
+display:flex;
+gap:30px;
+align-items:center;
+margin-bottom:30px;
+}
+
+/* IMAGE */
+
+.preview img{
+width:120px;
+height:120px;
+border-radius:50%;
+border:3px solid #00f2fe;
+object-fit:cover;
+transition:.3s;
+}
+
+/* FILE INPUT */
+
+.file input{
+color:white;
+margin-top:8px;
+}
+
+/* GRID */
+
+.form-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+}
+
+/* GROUP */
+
+.group{
+display:flex;
+flex-direction:column;
+gap:6px;
+}
+
+/* LABEL */
+
+label{
+font-size:13px;
+color:#aaa;
+}
+
+/* INPUT */
+
+input{
+padding:14px;
+border-radius:10px;
+border:1px solid rgba(255,255,255,0.2);
+background:transparent;
+color:white;
+outline:none;
+transition:.3s;
+}
+
+/* FOCUS */
+
+input:focus{
+border-color:#00f2fe;
+box-shadow:0 0 10px rgba(0,242,254,.3);
+}
+
+/* ACTIONS */
+
+.actions{
+margin-top:30px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+/* SAVE */
+
+.save{
+padding:14px 35px;
+border:none;
+border-radius:10px;
+background:linear-gradient(90deg,#00f2fe,#3b82f6);
+color:white;
+cursor:pointer;
+transition:.3s;
+}
+
+.save:hover{
+transform:scale(1.05);
+box-shadow:0 0 20px rgba(0,242,254,.5);
+}
+
+/* BACK */
+
+.back{
+text-decoration:none;
+padding:14px 35px;
+background:rgba(255,255,255,0.1);
+border-radius:10px;
+color:white;
+transition:.3s;
+}
+
+.back:hover{
+background:rgba(255,255,255,0.2);
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>✏️ Edit Auction</h2>
+
+<form method="POST" enctype="multipart/form-data">
+
+{% csrf_token %}
+
+<!-- TOP SECTION -->
+<div class="top">
+
+<div class="preview">
+<img id="previewImage" src="{{ auction.auction_logo.url }}">
+</div>
+
+<div class="file">
+<label>Change Auction Logo</label>
+<input type="file" name="auction_logo" onchange="previewFile(event)">
+</div>
+
+</div>
+
+<!-- FORM GRID -->
+
+<div class="form-grid">
+
+<div class="group">
+<label>Auction Name</label>
+<input name="auction_name" value="{{ auction.auction_name }}" required>
+</div>
+
+<div class="group">
+<label>Date</label>
+<input type="date" name="auction_date" value="{{ auction.auction_date|date:'Y-m-d' }}" required>
+</div>
+
+<div class="group">
+<label>Points Per Team</label>
+<input type="number" name="points_per_team" value="{{ auction.points_per_team }}" required>
+</div>
+
+<div class="group">
+<label>Minimum Bid</label>
+<input type="number" name="minimum_bid" value="{{ auction.minimum_bid }}" required>
+</div>
+
+<div class="group">
+<label>Bid Increase</label>
+<input type="number" name="bid_increase_by" value="{{ auction.bid_increase_by }}" required>
+</div>
+
+<div class="group">
+<label>Players Per Team</label>
+<input type="number" name="players_per_team" value="{{ auction.players_per_team }}" required>
+</div>
+
+</div>
+
+<!-- ACTION BUTTONS -->
+
+<div class="actions">
+
+<a href="{% url 'my_auctions' %}" class="back">Cancel</a>
+
+<button class="save">Update Auction</button>
+
+</div>
+
+</form>
+
+</div>
+
+<!-- 🔥 LIVE IMAGE PREVIEW SCRIPT -->
+
+<script>
+
+function previewFile(event){
+const file = event.target.files[0];
+if(file){
+document.getElementById("previewImage").src = URL.createObjectURL(file);
+}
+}
+
+</script>
+
+</body>
+
+</html>
