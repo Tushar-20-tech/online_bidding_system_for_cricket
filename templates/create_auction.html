@@ -1,6 +1,3 @@
-# Updated `create_auction.html`
-
-```html
 {% load static %}
 
 <!DOCTYPE html>
@@ -292,6 +289,19 @@ font-size:13px;
 color:#888;
 }
 
+/* IMAGE PREVIEW */
+
+#preview{
+display:none;
+width:180px;
+height:180px;
+margin:25px auto 0;
+object-fit:cover;
+border-radius:20px;
+border:4px solid #00f2fe;
+box-shadow:0 0 30px rgba(0,242,254,.25);
+}
+
 /* ACTIONS */
 
 .actions{
@@ -377,24 +387,16 @@ font-size:18px;
 
 <body>
 
-<!-- GLOW -->
-
 <div class="bg-glow"></div>
 <div class="bg-glow2"></div>
-
-<!-- HEADER -->
 
 <div class="header">
 🏏 Cricket Bidding System
 </div>
 
-<!-- MAIN -->
-
 <div class="wrapper">
 
 <div class="container">
-
-<!-- TITLE -->
 
 <div class="title">
 
@@ -406,15 +408,11 @@ Build your premium live cricket auction experience
 
 </div>
 
-<!-- MESSAGES -->
-
 {% for message in messages %}
 <div class="message">
 {{ message }}
 </div>
 {% endfor %}
-
-<!-- FORM -->
 
 <form method="POST" enctype="multipart/form-data">
 
@@ -437,14 +435,22 @@ Upload Auction Logo
 </div>
 
 <div class="upload-sub">
-Only JPG / JPEG / PNG allowed
+Only JPG allowed
 </div>
+
+<!-- IMAGE PREVIEW -->
+
+<img
+id="preview"
+src=""
+>
 
 <input
 type="file"
 name="auction_logo"
-accept=".jpg,.jpeg,.png"
+accept=".jpg"
 required
+onchange="previewImage(event)"
 >
 
 </label>
@@ -571,6 +577,32 @@ required
 
 </div>
 
+<script>
+
+function previewImage(event){
+
+const file = event.target.files[0];
+
+if(file){
+
+const reader = new FileReader();
+
+reader.onload = function(e){
+
+const preview =
+document.getElementById('preview');
+
+preview.src = e.target.result;
+
+preview.style.display = 'block';
+};
+
+reader.readAsDataURL(file);
+}
+
+}
+
+</script>
+
 </body>
 </html>
-```
